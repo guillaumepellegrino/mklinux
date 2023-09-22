@@ -1,0 +1,21 @@
+CONFIGS=$(notdir $(wildcard config/*))
+
+$(addprefix source/,$(CONFIGS)):
+	make -f scripts/Makefile.source CONFIG=.$(notdir $@).mk source
+
+# Configure build system according one of the file in config/$bsp/config.mk
+$(addprefix defconfig/,$(CONFIGS)):
+	@echo "Configure build system with config/$(notdir $@)/config.mk and defaults.mk"
+	@echo "Writing default configuration to .$(notdir $@).mk"
+	@echo export CONFIG_NAME=$(notdir $@) > .$(notdir $@).mk
+	@cat config/$(notdir $@)/config.mk >> .$(notdir $@).mk
+	@cat defaults.mk >> .$(notdir $@).mk
+	@cat .$(notdir $@).mk
+
+
+defconfig/all: $(addprefix defconfig/,$(CONFIGS))
+
+build/all: $(addprefix build/,$(CONFIGS))
+
+$(addprefix build/,$(CONFIGS)):
+	make -f scripts/Makefile.source CONFIG=.$(notdir $@).mk build

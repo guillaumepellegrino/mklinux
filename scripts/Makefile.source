@@ -1,0 +1,8 @@
+include $(CONFIG)
+
+source:
+	@echo "$(CONFIG_NAME) environment sourced"
+	@bash
+
+build:
+	make all -j$(CONFIG_NUMCPUS)

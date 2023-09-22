@@ -1,0 +1,108 @@
+SRC=$(PWD)/src
+OUTPUT=$(PWD)/output/$(CONFIG_NAME)
+RULE=output/$(CONFIG_NAME)
+STAGING=$(OUTPUT)/staging
+ROOTFS=$(OUTPUT)/rootfs
+DOWNLOAD=$(PWD)/download
+QEMU_IMG=output/$(CONFIG_NAME)/qemu.img
+COMPONENTS=linux sysroot busybox dropbear memtrace strace $(CONFIG_COMPONENTS)
+RULES=$(addprefix $(RULE)/,$(COMPONENTS))
+CONFIGS=$(notdir $(wildcard config/*))
+CONFIG?=.config.mk
+
+export CONFIG_OUTPUT=$(OUTPUT)
+export CROSS_COMPILE=$(CONFIG_CROSS_COMPILE)
+export CC=$(CROSS_COMPILE)gcc
+export CXX=$(CROSS_COMPILE)g++
+export LD=$(CROSS_COMPILE)ld
+export AR=$(CROSS_COMPILE)ar
+export CFLAGS=$(CONFIG_CFLAGS)
+export CXXFLAGS=$(CONFIG_CXXFLAGS)
+export LDFLAGS=$(CONFIG_LDFLAGS)
+
+# Build qemu image
+all: $(QEMU_IMG)
+
+# Run qemu image
+runqemu: all
+	./config/$(CONFIG_NAME)/runqemu.sh $(QEMU_IMG)
+
+# Run ssh script
+ssh:
+	./scripts/ssh
+
+# Build qemu image from rootfs
+$(QEMU_IMG): $(addsuffix /release,$(RULES))
+	mkdir -p $(dir $@)
+	rm -f $(@)
+	fakeroot mksquashfs $(ROOTFS) $(@)
+
+# Install components in rootfs
+release: $(addsuffix /release,$(RULES))
+release-force:
+	rm -rf $(ROOTFS)
+	rm -f $(OUTPUT)/*/release
+	make release
+
+# Generic release script
+$(RULE)/%/release: $(RULE)/%/install
+	@echo "Release $(notdir $(@:/release=)) to $(ROOTFS)"
+	./scripts/release.sh $(OUTPUT)/$(notdir $(@:/release=))/package/ $(ROOTFS)
+	touch $@
+
+# Install components headers and libraries in staging directory or tools directory
+install: $(addsuffix /install,$(RULES))
+
+# Generic install script
+$(RULE)/%/install: $(RULE)/%/mkpackage
+	@echo "Install $(notdir $(@:/install=)) to $(STAGING)"
+	./scripts/install.sh $(OUTPUT)/$(notdir $(@:/install=))/package/ $(STAGING)
+	touch $@
+
+# Build package for this component
+# - The package can be used for install and release targets
+# - install and release targets can be made generic.
+# - install must extract the whole package in staging directory
+# - release must extract and strip the elf and config files from package in rootfs directory.
+package:
+
+# Compile components
+compile: $(addsuffix /compile,$(RULES))
+
+# Download components
+download: $(addsuffix /download,$(RULES))
+
+# Clean components build
+clean:
+	rm -rf $(OUTPUT)
+
+# Clean components build
+$(addsuffix /clean,$(RULES)):
+	rm -rf $(dir $@)
+
+# Purge everything (except download)
+purge:
+	rm -rf output/ src/
+
+# Force rules
+$(addsuffix /release-force,$(RULES)):
+	rm -f $(@:-force=)
+	make $(@:-force=)
+$(addsuffix /install-force,$(RULES)):
+	rm -f $(@:-force=)
+	make $(@:-force=)
+$(addsuffix /mkpackage-force,$(RULES)):
+	rm -f $(@:-force=)
+	rm -rf $(@:/mkpackage-force=/package)
+	make $(@:-force=)
+$(addsuffix /compile-force,$(RULES)):
+	rm -f $(@:-force=)
+	make $(@:-force=)
+$(addsuffix /configure-force,$(RULES)):
+	rm -f $(@:-force=)
+	make $(@:-force=)
+$(addsuffix /download-force,$(RULES)):
+	rm -f $(@:-force=)
+	make $(@:-force=)
+
+-include $(wildcard rules/*/Makefile)

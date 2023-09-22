@@ -1,0 +1,10 @@
+export CONFIG_NUMCPUS?=13
+export CONFIG_QEMU?=qemu-system-$(CONFIG_ARCH)
+export CONFIG_CC?=$(CONFIG_CROSS_COMPILE)gcc
+export CONFIG_CXX?=$(CONFIG_CROSS_COMPILE)g++
+export CONFIG_LD?=$(CONFIG_CROSS_COMPILE)ld
+export CONFIG_STRIP?=$(CONFIG_CROSS_COMPILE)strip
+export CONFIG_CFLAGS?=-O2 -g -I$(STAGING)/include -I$(STAGING)/usr/include
+export CONFIG_CXXFLAGS?=-O2 -g -I$(STAGING)/include -I$(STAGING)/usr/include
+export CONFIG_LDFLAGS?=-L$(STAGING)/lib -L$(STAGING)/usr/lib
+export PS1=\u@$(CONFIG_NAME)-build:\w\$ "

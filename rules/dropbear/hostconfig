@@ -1,0 +1,10 @@
+
+Host qemu
+    HostName 127.0.0.1
+    Port ${CONFIG_SSH_PORT}
+    User root
+    IdentityFile ${CONFIG_OUTPUT}/dropbear/qemu-host
+    StrictHostKeyChecking no
+    GlobalKnownHostsFile ${CONFIG_OUTPUT}/dropbear/known_hosts
+    UserKnownHostsFile /dev/null
+
