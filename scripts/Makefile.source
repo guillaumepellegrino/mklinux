@@ -3,7 +3,7 @@ include $(CONFIG)
 
 source:
 	@echo "$(CONFIG_NAME) environment sourced"
-	@bash
+	@bash --init-file scripts/bashrc
 
 build:
 	make all -j$(CONFIG_NUMCPUS)

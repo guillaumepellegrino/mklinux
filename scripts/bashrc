@@ -1,0 +1,2 @@
+. ~/.bashrc
+PS1="\u@${CONFIG_NAME}:\w\$ "
