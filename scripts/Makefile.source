@@ -1,3 +1,4 @@
+# source the configuration file
 include $(CONFIG)
 
 source:

@@ -9,7 +9,7 @@ $(RULE)/memtrace/configure: $(RULE)/memtrace/download
 
 $(RULE)/memtrace/compile: $(RULE)/memtrace/configure
 	@echo "Compile memtrace"
-	make O=$(OUTPUT)/memtrace/build CC=$(CONFIG_CC) -C src/memtrace/$(MEMTRACE_PKV) -j$(CONFIG_NUMCPUS)
+	make O=$(OUTPUT)/memtrace/build -C src/memtrace/$(MEMTRACE_PKV) -j$(CONFIG_NUMCPUS)
 	touch $@
 
 $(RULE)/memtrace/mkpackage: $(RULE)/memtrace/compile

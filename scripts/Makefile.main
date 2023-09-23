@@ -1,22 +1,12 @@
 SRC=$(PWD)/src
-OUTPUT=$(PWD)/output/$(CONFIG_NAME)
+OUTPUT=$(CONFIG_OUTPUT)
+STAGING=$(CONFIG_STAGING)
 RULE=output/$(CONFIG_NAME)
-STAGING=$(OUTPUT)/staging
 ROOTFS=$(OUTPUT)/rootfs
 DOWNLOAD=$(PWD)/download
 QEMU_IMG=output/$(CONFIG_NAME)/qemu.img
 COMPONENTS=linux sysroot busybox dropbear memtrace strace $(CONFIG_COMPONENTS)
 RULES=$(addprefix $(RULE)/,$(COMPONENTS))
-
-export CONFIG_OUTPUT=$(OUTPUT)
-export CROSS_COMPILE=$(CONFIG_CROSS_COMPILE)
-export CC=$(CROSS_COMPILE)gcc
-export CXX=$(CROSS_COMPILE)g++
-export LD=$(CROSS_COMPILE)ld
-export AR=$(CROSS_COMPILE)ar
-export CFLAGS=$(CONFIG_CFLAGS)
-export CXXFLAGS=$(CONFIG_CXXFLAGS)
-export LDFLAGS=$(CONFIG_LDFLAGS)
 
 # Build qemu image
 all: $(QEMU_IMG)

@@ -16,8 +16,8 @@ rsync -av \
     . "$DST"
 
 #for exe in $(find -type f -executable); do
-#    echo "$CONFIG_STRIP --strip-unneeded $DST/$exe"
-#    "$CONFIG_STRIP" --strip-unneeded "$DST/$exe"
+#    echo "$STRIP --strip-unneeded $DST/$exe"
+#    "$STRIP" --strip-unneeded "$DST/$exe"
 #done
 
 exit 0

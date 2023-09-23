@@ -10,8 +10,8 @@ $(RULE)/busybox/configure: $(RULE)/busybox/download
 	mkdir -p $(OUTPUT)/busybox/package
 	make O=$(OUTPUT)/busybox/build -C src/busybox/$(BUSYBOX_PKV) defconfig
 	@echo "CONFIG_CROSS_COMPILER_PREFIX=\"$(CONFIG_CROSS_COMPILE)\"" > $(OUTPUT)/busybox/config.fragment
-	@echo "CONFIG_EXTRA_CFLAGS=\"$(CONFIG_CFLAGS) -D_XOPEN_SOURCE=700\"" >> $(OUTPUT)/busybox/config.fragment
-	@echo "CONFIG_EXTRA_LDFLAGS=\"$(CONFIG_LDFLAGS)\"" >> $(OUTPUT)/busybox/config.fragment
+	@echo "CONFIG_EXTRA_CFLAGS=\"$(CFLAGS) -D_XOPEN_SOURCE=700\"" >> $(OUTPUT)/busybox/config.fragment
+	@echo "CONFIG_EXTRA_LDFLAGS=\"$(LDFLAGS)\"" >> $(OUTPUT)/busybox/config.fragment
 	@echo "CONFIG_PREFIX=\"$(OUTPUT)/busybox/package\"" >> $(OUTPUT)/busybox/config.fragment
 	./scripts/setconfigfragment.sh $(OUTPUT)/busybox/build/.config rules/busybox/config.fragment
 	yes "" | make O=$(OUTPUT)/busybox/build -C src/busybox/$(BUSYBOX_PKV) oldconfig
