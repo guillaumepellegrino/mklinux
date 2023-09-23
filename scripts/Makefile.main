@@ -7,8 +7,6 @@ DOWNLOAD=$(PWD)/download
 QEMU_IMG=output/$(CONFIG_NAME)/qemu.img
 COMPONENTS=linux sysroot busybox dropbear memtrace strace $(CONFIG_COMPONENTS)
 RULES=$(addprefix $(RULE)/,$(COMPONENTS))
-CONFIGS=$(notdir $(wildcard config/*))
-CONFIG?=.config.mk
 
 export CONFIG_OUTPUT=$(OUTPUT)
 export CROSS_COMPILE=$(CONFIG_CROSS_COMPILE)
@@ -58,13 +56,6 @@ $(RULE)/%/install: $(RULE)/%/mkpackage
 	@echo "Install $(notdir $(@:/install=)) to $(STAGING)"
 	./scripts/install.sh $(OUTPUT)/$(notdir $(@:/install=))/package/ $(STAGING)
 	touch $@
-
-# Build package for this component
-# - The package can be used for install and release targets
-# - install and release targets can be made generic.
-# - install must extract the whole package in staging directory
-# - release must extract and strip the elf and config files from package in rootfs directory.
-package:
 
 # Compile components
 compile: $(addsuffix /compile,$(RULES))
