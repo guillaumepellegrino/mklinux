@@ -1,0 +1,35 @@
+#!/bin/sh
+
+set -x
+
+# basic mount 
+mount -t proc /proc /proc
+mount -t sysfs sysfs /sys
+mount -t devtmpfs /dev /dev
+mkdir -p /dev/pts
+mount -t devpts none /dev/pts
+mount -t tmpfs tmpfs /tmp
+mount -t tmpfs tmpfs /var
+mkdir -p /var/log
+
+# make /etc writable
+cp -r /etc /tmp/
+mount -o bind /tmp/etc /etc
+
+# set hostname
+hostname "$(cat /etc/hostname)"
+
+# start logging
+syslogd
+
+# configure interface
+ifconfig lo up
+ifconfig eth0 10.0.0.10 up
+
+# call init scripts
+echo "Calling init scripts"
+for script in /etc/rc1.d/*; do
+    "$script" start
+done
+
+echo "Init done"

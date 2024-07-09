@@ -1,0 +1,44 @@
+SCRIPTDIR=scripts
+
+all: qemu.img
+
+# Build QEMU Image
+qemu.img: release
+	rm -f $(@)
+	fakeroot mksquashfs release/ $(@)
+
+# Run QEMU Image
+runqemu: qemu.img
+	./config/runqemu.sh $(^)
+
+reconfigure:
+	make -C ../../ config/$(notdir $(PWD))
+
+define download
+	$(SCRIPTDIR)/download-component.sh $(1)
+endef
+
+define configure
+	$(SCRIPTDIR)/configure-component.sh $(1)
+endef
+
+define compile
+	$(SCRIPTDIR)/compile-component.sh $(1)
+endef
+
+define mkpackage
+	$(SCRIPTDIR)/mkpackage-component.sh $(1)
+endef
+
+define install
+	$(SCRIPTDIR)/install-component.sh $(1)
+endef
+
+define release
+	$(SCRIPTDIR)/release-component.sh $(1)
+endef
+
+include config.mk
+include dependencies.mk
+
+.PHONY: all download compile configure install clean runqemu
