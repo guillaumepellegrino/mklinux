@@ -3,13 +3,19 @@ SCRIPTDIR=scripts
 all: qemu.img
 
 # Build QEMU Image
-qemu.img: release
+qemu.img: components-y
 	rm -f $(@)
 	fakeroot mksquashfs release/ $(@)
+
+components-y:
+	touch "$@"
 
 # Run QEMU Image
 runqemu: qemu.img
 	./config/runqemu.sh $(^)
+
+ssh:
+	ssh -F component/dropbear/hostconfig qemu
 
 reconfigure:
 	make -C ../../ config/$(notdir $(PWD))
@@ -38,7 +44,11 @@ define release
 	$(SCRIPTDIR)/release-component.sh $(1)
 endef
 
+define scp
+	$(SCRIPTDIR)/scp-component.sh $(1)
+endef
+
 include config.mk
 include dependencies.mk
 
-.PHONY: all download compile configure install clean runqemu
+.PHONY: all clean runqemu

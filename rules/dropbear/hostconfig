@@ -1,0 +1,10 @@
+
+Host qemu
+    HostName 127.0.0.1
+    Port ${CONFIG_SSH_PORT}
+    User root
+    IdentityFile $COMPONENT_DIR/qemu-host
+    StrictHostKeyChecking no
+    GlobalKnownHostsFile $COMPONENT_DIR/known_hosts
+    UserKnownHostsFile /dev/null
+

@@ -33,7 +33,10 @@ main()
     local components=$(echo $rules | sed "s|rules/||g")
     local makefile_deps="$output/dependencies.mk"
 
-    echo "# $configname build dependencies " > "$makefile_deps"
+    echo "###" > "$makefile_deps"
+    echo "# build dependencies " >> "$makefile_deps"
+    echo "###" >> "$makefile_deps"
+    echo "" >> "$makefile_deps"
     for component in $components; do
         ./scripts/makedeps.sh "$component" >> "$makefile_deps"
     done

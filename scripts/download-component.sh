@@ -44,13 +44,13 @@ local_component_copy()
 }
 
 
+mkdir -p "$COMPONENT_DIR"
 if [ -z "$URL" ]; then
     touch "$COMPONENT_DIR/download"
     exit 0
 fi
 
 log "Enter"
-mkdir -p "$COMPONENT_DIR"
 
 log "URL is $URL"
 log "SHA256 is $SHA256"

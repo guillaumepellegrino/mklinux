@@ -2,7 +2,7 @@
 
 set -x
 
-# basic mount 
+# basic mount
 mount -t proc /proc /proc
 mount -t sysfs sysfs /sys
 mount -t devtmpfs /dev /dev
@@ -12,9 +12,13 @@ mount -t tmpfs tmpfs /tmp
 mount -t tmpfs tmpfs /var
 mkdir -p /var/log
 
-# make /etc writable
-cp -r /etc /tmp/
-mount -o bind /tmp/etc /etc
+# mount overlayfs
+directories="bin home lib64 media opt run usr boot etc lib root sbin"
+mount -t tmpfs tmpfs /overlay
+for dir in $directories; do
+    mkdir -p /overlay/$dir/work /overlay/$dir/upper
+    mount -t overlay overlay /$dir -o "lowerdir=/$dir,upperdir=/overlay/$dir/upper,workdir=/overlay/$dir/work"
+done
 
 # set hostname
 hostname "$(cat /etc/hostname)"

@@ -3,17 +3,19 @@
 set -e
 
 component="$1"
+COMPONENT="$(echo $component | tr '[:lower:]' '[:upper:]' | sed "s/-/_/" )"
 source "./rules/$component/$component.sh"
 
 
 cat << EOF
 # $component component rules
-download: component/$component/download
-compile: component/$component/compile
-configure: component/$component/configure
-mkpackage: component/$component/mkpackage
-install: component/$component/install
-release: component/$component/release
+#download: component/$component/download
+#compile: component/$component/compile
+#configure: component/$component/configure
+#mkpackage: component/$component/mkpackage
+#install: component/$component/install
+#release: component/$component/release
+components-\$(CONFIG_$COMPONENT): component/$component/release
 
 component/$component/download:
 	\$(call download,$component)
@@ -33,8 +35,11 @@ component/$component/install: component/$component/mkpackage
 component/$component/release: component/$component/install
 	\$(call release,$component)
 
+component/$component/scp: component/$component/mkpackage
+	\$(call scp,$component)
+
 component/$component/clean:
-	rm -rf $component/
+	rm -rf component/$component/
 
 component/$component/download-force:
 	\$(call download,$component)
