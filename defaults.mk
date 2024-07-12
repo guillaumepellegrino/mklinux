@@ -6,6 +6,7 @@ export CONFIG_LINUX?=y
 export CONFIG_MEMTRACE?=y
 export CONFIG_SYSROOT?=y
 export CONFIG_STRACE?=y
+export CONFIG_DROPBEAR?=y
 
 # Build variables
 export SCRIPTDIR=$(PWD)/scripts

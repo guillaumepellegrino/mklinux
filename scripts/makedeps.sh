@@ -23,7 +23,7 @@ component/$component/download:
 component/$component/configure: component/$component/download
 	\$(call configure,$component)
 
-component/$component/compile: component/$component/configure $(for dep in $DEPENDENCIES; do echo "$dep/compile"; done)
+component/$component/compile: component/$component/configure $(for dep in $DEPENDENCIES; do echo "component/$dep/compile"; done)
 	\$(call compile,$component)
 
 component/$component/mkpackage: component/$component/compile
@@ -47,7 +47,7 @@ component/$component/download-force:
 component/$component/configure-force: component/$component/download
 	\$(call configure,$component)
 
-component/$component/compile-force: component/$component/configure $(for dep in $DEPENDENCIES; do echo "$dep/compile"; done)
+component/$component/compile-force: component/$component/configure $(for dep in $DEPENDENCIES; do echo "component/$dep/compile"; done)
 	\$(call compile,$component)
 
 component/$component/mkpackage-force: component/$component/compile

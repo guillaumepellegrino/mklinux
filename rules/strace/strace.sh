@@ -1,9 +1,8 @@
-
 PKV=strace-6.9
 SRC=$COMPONENT_SRC/$PKV
 URL=https://github.com/strace/strace/releases/download/v6.9/strace-6.9.tar.xz
 SHA256=da189e990a82e3ca3a5a4631012f7ecfd489dab459854d82d8caf6a865c1356a
-DEPENDENCIES=
+DEPENDENCIES=libpcre
 
 configure()
 {

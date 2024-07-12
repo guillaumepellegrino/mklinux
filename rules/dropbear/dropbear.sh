@@ -2,6 +2,7 @@ DROPBEAR_PKV=dropbear-2022.83
 SRC=$COMPONENT_SRC/$DROPBEAR_PKV
 URL=http://matt.ucc.asn.au/dropbear/releases/$DROPBEAR_PKV.tar.bz2
 SHA256=bc5a121ffbc94b5171ad5ebe01be42746d50aa797c9549a4639894a16749443b
+DEPENDENCIES=
 
 configure()
 {
