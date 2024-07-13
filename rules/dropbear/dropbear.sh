@@ -1,14 +1,13 @@
 DROPBEAR_PKV=dropbear-2022.83
-SRC=$COMPONENT_SRC/$DROPBEAR_PKV
 URL=http://matt.ucc.asn.au/dropbear/releases/$DROPBEAR_PKV.tar.bz2
 SHA256=bc5a121ffbc94b5171ad5ebe01be42746d50aa797c9549a4639894a16749443b
-DEPENDENCIES=
+DEPENDENCIES=toolchain
 
 configure()
 {
-    sed -i "s/#define DROPBEAR_SVR_PASSWORD_AUTH 1/#define DROPBEAR_SVR_PASSWORD_AUTH 0/" $SRC/default_options.h
+    sed -i "s/#define DROPBEAR_SVR_PASSWORD_AUTH 1/#define DROPBEAR_SVR_PASSWORD_AUTH 0/" $COMPONENT_SRC/default_options.h
     cd $COMPONENT_BUILD
-    $SRC/configure --prefix=/usr --host $CONFIG_TARGET_TRIPLET --disable-zlib
+    $COMPONENT_SRC/configure --prefix=/usr --host $CONFIG_TARGET_TRIPLET --disable-zlib
 }
 
 compile()

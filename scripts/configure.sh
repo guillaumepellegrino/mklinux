@@ -11,7 +11,6 @@ help()
     echo "Usage: ./configure.sh [configname]"
 }
 
-
 main()
 {
     local configname="$1"

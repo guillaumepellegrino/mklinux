@@ -14,6 +14,17 @@ components-y:
 runqemu: qemu.img
 	./config/runqemu.sh $(^)
 
+clean/build:
+	rm -rf component/ staging/ release/
+
+clean/package:
+	rm -f component/*/mkpackage
+	rm -f component/*/staging
+	rm -f component/*/release
+	rm -rf component/*/package/
+	rm -rf staging/
+	rm -rf release/
+
 ssh:
 	ssh -F component/dropbear/hostconfig qemu
 
@@ -51,4 +62,4 @@ endef
 include config.mk
 include dependencies.mk
 
-.PHONY: all clean runqemu
+.PHONY: all runqemu

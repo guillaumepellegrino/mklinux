@@ -6,24 +6,24 @@ component="$1"
 COMPONENT="$(echo $component | tr '[:lower:]' '[:upper:]' | sed "s/-/_/" )"
 source "./rules/$component/$component.sh"
 
+printdeps()
+{
+    for dep in $DEPENDENCIES; do
+        printf "component/$dep/install "
+    done
+}
 
 cat << EOF
 # $component component rules
-#download: component/$component/download
-#compile: component/$component/compile
-#configure: component/$component/configure
-#mkpackage: component/$component/mkpackage
-#install: component/$component/install
-#release: component/$component/release
 components-\$(CONFIG_$COMPONENT): component/$component/release
 
 component/$component/download:
 	\$(call download,$component)
 
-component/$component/configure: component/$component/download
+component/$component/configure: component/$component/download $(printdeps)
 	\$(call configure,$component)
 
-component/$component/compile: component/$component/configure $(for dep in $DEPENDENCIES; do echo "component/$dep/compile"; done)
+component/$component/compile: component/$component/configure
 	\$(call compile,$component)
 
 component/$component/mkpackage: component/$component/compile
@@ -44,10 +44,10 @@ component/$component/clean:
 component/$component/download-force:
 	\$(call download,$component)
 
-component/$component/configure-force: component/$component/download
+component/$component/configure-force: component/$component/download $(printdeps)
 	\$(call configure,$component)
 
-component/$component/compile-force: component/$component/configure $(for dep in $DEPENDENCIES; do echo "component/$dep/compile"; done)
+component/$component/compile-force: component/$component/configure
 	\$(call compile,$component)
 
 component/$component/mkpackage-force: component/$component/compile

@@ -4,8 +4,6 @@ COMPONENT="$1"
 mkdir -p "rules/$COMPONENT"
 
 cat > "rules/$COMPONENT/$COMPONENT".sh << EOF
-PKV=TBD
-SRC="\$COMPONENT_SRC/\$PKV"
 URL=TBD
 SHA256=TBD
 DEPENDENCIES=
@@ -13,7 +11,7 @@ DEPENDENCIES=
 configure()
 {
     cd \$COMPONENT_BUILD
-    \$SRC/configure --prefix=/usr --host \$CONFIG_TARGET_TRIPLET
+    \$COMPONENT_SRC/configure --prefix=/usr --host \$CONFIG_TARGET_TRIPLET
 }
 
 compile()

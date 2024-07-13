@@ -1,16 +1,13 @@
-
-PKV=1.1.0
-SRC=$COMPONENT_SRC/memtrace-$PKV
-URL=https://github.com/guillaumepellegrino/memtrace/archive/refs/tags/v$PKV.tar.gz
-SHA256=7128cb82c5ff1e91686cd6aa5fef89e65b06480c2d18782769d5ec12de0e011d
-DEPENDENCIES=
+URL=https://github.com/guillaumepellegrino/memtrace/archive/refs/tags/v1.2.3.tar.gz
+SHA256=64bce7d6594552b1a4f481d795f0c13863700f39a7586122fafc27de9dac9a29
+DEPENDENCIES=toolchain
 
 compile()
 {
-    make O=$COMPONENT_BUILD -C $SRC -f Makefile.target -j$CONFIG_NUMCPUS
+    make O=$COMPONENT_BUILD -C $COMPONENT_SRC -f Makefile.target -j$CONFIG_NUMCPUS
 }
 
 mkpackage()
 {
-    make O=$COMPONENT_BUILD DESTDIR=$COMPONENT_PACKAGE -C $SRC -f Makefile.target install
+    make O=$COMPONENT_BUILD DESTDIR=$COMPONENT_PACKAGE -C $COMPONENT_SRC -f Makefile.target install
 }

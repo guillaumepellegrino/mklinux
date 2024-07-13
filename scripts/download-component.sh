@@ -30,9 +30,9 @@ component_extract()
     echo "Extract $DLNAME"
     mkdir -p "$COMPONENT_SRC/$NAME"
     case "$COMPONENT_DOWNLOAD/$DLNAME" in
-        *.tar.bz2) tar -xf "$COMPONENT_DOWNLOAD/$DLNAME" -C "$COMPONENT_SRC/$NAME" || error "extract";;
-        *.tar.gz)  tar -xzf "$COMPONENT_DOWNLOAD/$DLNAME" -C "$COMPONENT_SRC/$NAME" || error "extract";;
-        *.tar.xz)  tar -xf "$COMPONENT_DOWNLOAD/$DLNAME" -C "$COMPONENT_SRC/$NAME" || error "extract";;
+        *.tar.bz2) tar --strip-components=1 -xf "$COMPONENT_DOWNLOAD/$DLNAME" -C "$COMPONENT_SRC/$NAME" || error "extract";;
+        *.tar.gz)  tar --strip-components=1 -xzf "$COMPONENT_DOWNLOAD/$DLNAME" -C "$COMPONENT_SRC/$NAME" || error "extract";;
+        *.tar.xz)  tar --strip-components=1 -xf "$COMPONENT_DOWNLOAD/$DLNAME" -C "$COMPONENT_SRC/$NAME" || error "extract";;
         *)         error "$NAME: Unknown file extension";;
     esac
 }
