@@ -10,6 +10,7 @@ release()
     #cd /lib64/ && rsync -av ld-* $COMPONENT_PACKAGE/lib64/
     cd $COMPONENT_SRC/x86_64-buildroot-linux-gnu/sysroot
     rsync -av . $RELEASEDIR
+    cp -f $COMPONENT_SRC/x86_64-buildroot-linux-gnu/debug-root/usr/bin/gdbserver $RELEASEDIR/usr/bin/
     ln -sfT . $RELEASEDIR/lib/x86_64-linux-gnu
     ln -sfT . $RELEASEDIR/usr/lib/x86_64-linux-gnu
     rm -f $RELEASEDIR/etc/profile
