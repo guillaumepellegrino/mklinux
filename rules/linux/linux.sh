@@ -8,6 +8,7 @@ configure()
     make ARCH=$CONFIG_ARCH O=$COMPONENT_BUILD -C $COMPONENT_SRC $CONFIG_KERNEL_DEFCONFIG
     ./scripts/setconfigfragment.sh $COMPONENT_BUILD/.config $COMPONENT_RULE/config.fragment
     make ARCH=$CONFIG_ARCH O=$COMPONENT_BUILD -C $COMPONENT_SRC olddefconfig
+    make ARCH=$CONFIG_ARCH O=$COMPONENT_BUILD -C $COMPONENT_SRC prepare
 }
 
 compile()

@@ -13,6 +13,7 @@ export SCRIPTDIR=$(PWD)/scripts
 export RULESDIR=$(PWD)/rules
 export STAGINGDIR=$(PWD)/staging
 export RELEASEDIR=$(PWD)/release
+export PKG_CONFIG_PATH=$(PWD)/staging/usr/lib/pkgconfig
 export CROSS_COMPILE=$(CONFIG_CROSS_COMPILE)
 export CC=$(CROSS_COMPILE)gcc
 export CXX=$(CROSS_COMPILE)g++
