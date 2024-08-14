@@ -24,13 +24,27 @@ main()
     ln -sfT "../../config/$configname" "$output/config"
     ln -sfT "../../scripts/Makefile.build" "$output/Makefile"
     ln -sfT "../../download" "$output/download"
-    ln -sfT "../../rules" "$output/rules"
     ln -sfT "../../scripts" "$output/scripts"
     ln -sfT "../../src" "$output/src"
 
+    mkdir -p "$output/rules"
+    for rule in rules/*; do
+        ln -sf "../../../$rule" "$output/rules/"
+    done
+
+    # Handle thirdparty components
+    for thirdparty in thirdparty/*; do
+        echo "- With $thirdparty support"
+        cat "$thirdparty/defaults.mk" >> "$output/config.mk"
+        for rule in $thirdparty/rules/*; do
+            ln -sf "../../../$rule" "$output/rules/"
+        done
+    done
+
+    cd $output/
     local rules=rules/*
     local components=$(echo $rules | sed "s|rules/||g")
-    local makefile_deps="$output/dependencies.mk"
+    local makefile_deps="dependencies.mk"
 
     echo "###" > "$makefile_deps"
     echo "# build dependencies " >> "$makefile_deps"

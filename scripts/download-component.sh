@@ -28,21 +28,14 @@ component_download()
 component_extract()
 {
     echo "Extract $DLNAME"
-    mkdir -p "$COMPONENT_SRC/$NAME"
+    mkdir -p "$COMPONENT_SRC"
     case "$COMPONENT_DOWNLOAD/$DLNAME" in
-        *.tar.bz2) tar --strip-components=1 -xf "$COMPONENT_DOWNLOAD/$DLNAME" -C "$COMPONENT_SRC/$NAME" || error "extract";;
-        *.tar.gz)  tar --strip-components=1 -xzf "$COMPONENT_DOWNLOAD/$DLNAME" -C "$COMPONENT_SRC/$NAME" || error "extract";;
-        *.tar.xz)  tar --strip-components=1 -xf "$COMPONENT_DOWNLOAD/$DLNAME" -C "$COMPONENT_SRC/$NAME" || error "extract";;
-        *)         error "$NAME: Unknown file extension";;
+        *.tar.bz2) tar --strip-components=1 -xf "$COMPONENT_DOWNLOAD/$DLNAME" -C "$COMPONENT_SRC" || error "extract";;
+        *.tar.gz)  tar --strip-components=1 -xzf "$COMPONENT_DOWNLOAD/$DLNAME" -C "$COMPONENT_SRC" || error "extract";;
+        *.tar.xz)  tar --strip-components=1 -xf "$COMPONENT_DOWNLOAD/$DLNAME" -C "$COMPONENT_SRC" || error "extract";;
+        *)         error "$DLNAME: Unknown file extension";;
     esac
 }
-
-local_component_copy()
-{
-    echo "Copy local component to $COMPONENT_SRC/$NAME from $URL"
-    rsync -a "$URL/" "$COMPONENT_SRC/$NAME"
-}
-
 
 mkdir -p "$COMPONENT_DIR"
 if [ -z "$URL" ]; then
@@ -53,19 +46,19 @@ fi
 log "Enter"
 
 log "URL is $URL"
-log "SHA256 is $SHA256"
 PROTOCOL=$(echo "$URL" | sed "s|://.*||")
 DLNAME=$(basename "$URL")
 
 if [[ -d "$URL" ]]; then
-    local_component_copy
-    exit
+    echo "ln -sfT $URL $COMPONENT_SRC"
+    ln -sfT "$URL" "$COMPONENT_SRC"
+else
+    log "SHA256 is $SHA256"
+    if [[ "$SHA256" != "$(component_chksum)" ]]; then
+        component_download
+    fi
+    component_extract
 fi
-
-if [[ "$SHA256" != "$(component_chksum)" ]]; then
-    component_download
-fi
-component_extract
 
 touch "$COMPONENT_DIR/download"
 log "Exit"
