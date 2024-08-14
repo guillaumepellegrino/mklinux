@@ -21,13 +21,13 @@ Make a minimalist linux OS to be run on a qemu machine.
 
 It will generate a minimalist linux image which can be run under qemu.
 
-The build is defined in 6x stages:
-- download
-- configure
-- compile
-- package
-- install (optional)
-- release (optional)
+- The build is defined in 6x stages:
+  - download
+  - configure
+  - compile
+  - package
+  - install
+  - release
 
 - Build system will download, configure, compile, install and release each component before generating a qemu image.
 - Build system is heavy relying on Makefile dependencies, allowing fearless parallelism as long as component dependencies are correctly defined in rules/.
