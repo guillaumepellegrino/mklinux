@@ -59,4 +59,4 @@ make ssh
   - `COMPONENT_SRC` : The directory where is extracted the component sources.
   - `COMPONENT_BUILD` : The directory where the component shall be built.
   - `COMPONENT_PACKAGE` : The directory where the component shall be installed.
-- Additionally, the global configuration contained in `config.mk` and `defaults.mk` is sourced by the top Makefile and can be used in the component rules. It contains the env var usually needed for cross-compilation like `CC`, `LD`, `CROSS_COMPILE`, `CFLAGS`, `LDFLAGS`, and more.
+- Additionally, the global configuration contained in `config.mk` is sourced by the top Makefile and can be used in the component rules. It contains the env var usually needed for cross-compilation like `CC`, `LD`, `CROSS_COMPILE`, `CFLAGS`, `LDFLAGS`, and more.
