@@ -60,3 +60,19 @@ make ssh
   - `COMPONENT_BUILD` : The directory where the component shall be built.
   - `COMPONENT_PACKAGE` : The directory where the component shall be installed.
 - Additionally, the global configuration contained in `config.mk` is sourced by the top Makefile and can be used in the component rules. It contains the env var usually needed for cross-compilation like `CC`, `LD`, `CROSS_COMPILE`, `CFLAGS`, `LDFLAGS`, and more.
+
+# Define a third-party component
+It is possible to define third party components which will not be tracked in git:
+```
+sahphilog2@sah1lpt569:~/Workspace/mklinux_v2$ tree thirdparty/
+thirdparty/
+└── custo
+    ├── defaults.mk
+    └── rules
+        ├── hwoffload
+        │   └── hwoffload.sh
+        └── hwoffload-kernel
+            └── hwoffload-kernel.sh
+
+5 directories, 3 files
+```
